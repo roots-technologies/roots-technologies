@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- Catégorie de rubrique -->
+	<data noupdate="0">
+		<record  id="gain_imposable" model="hr.salary.rule.category">
+			<field name="name">GAIN IMPOSABLE</field>
+			<field name="code">BASIC</field>
+		</record>
+
+		<record  id="retenu" model="hr.salary.rule.category">
+			<field name="name">RETENUE</field>
+			<field name="code">DED</field>
+		</record>
+
+		<record  id="autre_gain" model="hr.salary.rule.category">
+			<field name="name">AUTRE GAIN</field>
+			<field name="code">ATR</field>
+		</record>
+
+		<record  id="autre_retenu" model="hr.salary.rule.category">
+			<field name="name">AUTRE RETENUE</field>
+			<field name="code">ARTN</field>
+		</record>
+
+		<record  id="charge_patronale" model="hr.salary.rule.category">
+			<field name="name">CHARGE PATRONALE</field>
+			<field name="code">COMP</field>
+		</record>
+	</data>
+	<!-- Rubriques avec des règles de calcule salariale-->
+	<data>
+		<record  id="prime_anciennete" model="hr.salary.rule">
+			<field name="name">Prime d'ancienneté</field>
+			<field name="code">102</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">3</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">datej = payslip.date_to.strftime('%Y-%m-%d')
+datek = contract.date_start.strftime('%Y-%m-%d')
+n1 = datej.split('-')
+n2 =  datek.split('-')
+d0 = datetime.date(int(n1[0]),int(n1[1]),int(n1[2]))
+d1 = datetime.date(int(n2[0]),int(n2[1]),int(n2[2]))
+deltat = d0 - d1
+n3 = (deltat.days - contract.conge_sans_solde)/365
+n4 = n3 if n3 > 2 else 0
+result = round(contract.wage * floor(n4) / 100)</field>
+		</record>
+		<record  id="absence" model="hr.salary.rule">
+			<field name="name">Absence</field>
+			<field name="code">106</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">6</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = -contract.absence</field>
+		</record>
+		<record  id="sursalaire" model="hr.salary.rule">
+			<field name="name">sursalaire</field>
+			<field name="code">107</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">4</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.sursalaire</field>
+		</record>
+		<record  id="prime_garde" model="hr.salary.rule">
+			<field name="name">Prime de Garde</field>
+			<field name="code">108</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">5</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.prime_garde</field>
+		</record>
+		<record  id="rapel_salaire_imp" model="hr.salary.rule">
+			<field name="name">Rappel sur salaire</field>
+			<field name="code">109</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">7</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.rapel_salaire_imp</field>
+		</record>
+		<record  id="indemnite_transport" model="hr.salary.rule">
+			<field name="name">Indemnité de transport</field>
+			<field name="code">110</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">8</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.indemnite_transport</field>
+		</record>
+		<record  id="prime_risque" model="hr.salary.rule">
+			<field name="name">Prime de risque</field>
+			<field name="code">111</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">9</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.prime_risque</field>
+		</record>
+
+		<record  id="prime_speciale" model="hr.salary.rule">
+			<field name="name">Prime spéciale</field>
+			<field name="code">112</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">10</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.prime_speciale</field>
+		</record>
+
+		<record  id="astreinte" model="hr.salary.rule">
+			<field name="name">Astreinte</field>
+			<field name="code">113</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">11</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.astreinte</field>
+		</record>
+
+		<record  id="prime_responsabilite" model="hr.salary.rule">
+			<field name="name">Prime de responsabilté</field>
+			<field name="code">114</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">12</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.prime_responsabilite</field>
+		</record>
+
+		<record  id="prime_specialite" model="hr.salary.rule">
+			<field name="name">Prime de spécialité</field>
+			<field name="code">115</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">13</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.prime_specialite</field>
+		</record>
+		<record  id="appel_urgence" model="hr.salary.rule">
+			<field name="name">Appel d'Urgence</field>
+			<field name="code">116</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">14</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.appel_urgence</field>
+		</record>
+
+		<record  id="charge_patronale_rule" model="hr.salary.rule">
+			<field name="name">Charges patronales</field>
+			<field name="code">220</field>
+			<field name="category_id" ref="charge_patronale" />
+			<field name="sequence">12</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">percentage</field>
+			<field name="amount_percentage_base">categories.BASIC</field>
+			<field name="amount_percentage">17.5</field>
+		</record>
+
+		<record  id="retenue_css" model="hr.salary.rule">
+			<field name="name">Retenue CNSS</field>
+			<field name="code">400</field>
+			<field name="category_id" ref="retenu" />
+			<field name="sequence">16</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = round(categories.BASIC* 4 /100)</field>
+		</record>
+		<record  id="retenue_irpp" model="hr.salary.rule">
+			<field name="name">Retenue IRPP</field>
+			<field name="code">410</field>
+			<field name="category_id" ref="retenu" />
+			<field name="sequence">17</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">salaireBrut = categories.BASIC
+cnss = salaireBrut * 4 / 100
+semibrut = salaireBrut - cnss
+abattement = semibrut * 28 / 100
+revenu_semi_net = semibrut - abattement
+allocation = 10000 *  employee.children
+revenu_net = revenu_semi_net - allocation
+baseirpp = revenu_net
+
+tranche1 = baseirpp  &lt; 75000 >= 0
+tranche2 = baseirpp  &lt; 333333.333 and baseirpp >= 75000
+tranche3 = baseirpp  &lt; 500000 and baseirpp >= 333333.333
+tranche4 = baseirpp  &lt; 833333.333 and baseirpp >=  500000
+tranche5 = baseirpp  &lt; 1250000 and baseirpp >=  833333.333
+tranche6 = baseirpp >= 1250000
+
+
+tranche1_irpp = (75000 - 0)*.5/100
+tranche2_irpp = (333333.333 - 75000)*7/100
+tranche3_irpp = (500000 - 333333.333)*15/100
+tranche4_irpp = (833333.333 - 500000)*25/100
+tranche5_irpp = (1250000 - 833333.333)*30/100
+tranche6_irpp = (baseirpp)*35/100
+
+if tranche1:
+	irpp = baseirpp * .5 /100
+if tranche2 :
+	irpp = tranche1_irpp + (baseirpp - 75000) * 7/100
+if tranche3 :
+	irpp = tranche1_irpp + tranche2_irpp + (baseirpp - 333333.333) * 15/100
+if tranche4 :
+	irpp = tranche1_irpp + tranche2_irpp + tranche3_irpp +  (baseirpp - 500000) * 25/100
+if tranche5 :
+	irpp = tranche1_irpp + tranche2_irpp + tranche3_irpp + tranche4_irpp +  (baseirpp - 833333.333) * 30/100
+if tranche6 :
+	irpp = tranche1_irpp + tranche2_irpp + tranche3_irpp + tranche4_irpp + tranche5_irpp +  (baseirpp - 1250000) * 35/100
+
+irpp = floor((irpp / 10)) * 10
+
+if irpp &lt; 250:
+	irpp = 250
+
+result = irpp</field>
+		</record>
+
+		<record  id="total_cotisation" model="hr.salary.rule">
+			<field name="name">Total cotisation</field>
+			<field name="code">520</field>
+			<field name="category_id" ref="autre_retenu" />
+			<field name="sequence">18</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = categories.DED</field>
+		</record>
+
+		<record  id="prime_caisse" model="hr.salary.rule">
+			<field name="name">Prime de caisse</field>
+			<field name="code">521</field>
+			<field name="category_id" ref="autre_retenu" />
+			<field name="sequence">19</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.prime_caisse</field>
+		</record>
+
+		<record  id="prime_panier" model="hr.salary.rule">
+			<field name="name">Prime de panier</field>
+			<field name="code">522</field>
+			<field name="category_id" ref="autre_retenu" />
+			<field name="sequence">20</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.prime_panier</field>
+		</record>
+
+		<record  id="adjustement" model="hr.salary.rule">
+			<field name="name">Ajustement salaire net</field>
+			<field name="code">122</field>
+			<field name="category_id" ref="autre_retenu" />
+			<field name="sequence">21</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.adjustement</field>
+		</record>
+
+		<record  id="remboursement_pret" model="hr.salary.rule">
+			<field name="name">Remboursement Prêt</field>
+			<field name="code">123</field>
+			<field name="category_id" ref="autre_retenu" />
+			<field name="sequence">22</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.remboursement_pret</field>
+		</record>
+
+		<record  id="trop_percu" model="hr.salary.rule">
+			<field name="name">Trop Perçu sur Prime</field>
+			<field name="code">124</field>
+			<field name="category_id" ref="gain_imposable" />
+			<field name="sequence">23</field>
+			<field name="active">TRUE</field>
+			<field name="appears_on_payslip">TRUE</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = -contract.trop_percu</field>
+		</record>
+		
+	</data>
+</odoo>

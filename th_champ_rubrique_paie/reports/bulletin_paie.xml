@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="paperformat_bulltin_paie" model="report.paperformat">
+      <field name="name">BULLETIN A4</field>
+      <field name="default" eval="True"/>
+      <field name="format">custom</field>
+      <field name="page_height">210</field>
+      <field name="page_width">297</field>
+      <!-- <field name="orientation">portrait</field> -->
+      <field name="margin_top">10</field>
+      <field name="margin_bottom">0</field>
+      <field name="margin_left">7</field>
+      <field name="margin_right">7</field>
+      <field name="header_line" eval="False"/>
+      <field name="header_spacing">35</field>
+      <field name="dpi">90</field>
+  </record>
+
+	<report 
+		id = "bulletin_paie_report_view" 
+		model = "hr.payslip" 
+		string = "BULLETIN DE PAIE" 
+		report_type = "qweb-pdf" 
+		name = "th_champ_rubrique_paie.hr_payroll_bulletin_paie" 
+		file = "th_champ_rubrique_paie.hr_payroll_bulletin_paie"
+    paperformat="paperformat_bulltin_paie"
+
+	/>
+	<template id="hr_payroll_bulletin_paie">
+		 <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <!--<t t-call="web.internal_layout">-->
+            
+            <style type="text/css">
+              html{
+              /*font-family: Century Gothic;*/
+              }
+              .MyTable {
+                 border-collapse:collapse;
+                 border:1px solid black;
+                 width: 100%;
+                }
+              .MyTable td {
+                 border:1px solid black;
+                 border-bottom : 0px;
+                 border-top: 0px;
+                 margin-left: 150px;
+               }
+               .MyTable tr{
+                border-bottom : 0px;
+                 border-top: 0px;
+               }
+               .MyTable th{
+                border:1px solid black;
+               }
+               .entete {
+                 text-align: center;
+               }
+               .img{
+                  width: 200px;
+                  height: 150px;
+                 }
+            .montant{
+              text-align: right;
+             }
+             .company{
+              font-size: 22px;
+              font-weight: bold;
+             }
+             
+             .rubrique{
+              font-size: 20;
+             }
+            </style>
+                <div class="page" style="border: 2px solid black; width: 100%; padding: -20px; height: auto; margin-top:30px;">
+                 <table class="MyTable entete">
+                  <tr>
+                    <td><img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" width="200" alt="Logo"/>
+                    </td>
+                    <td><h1 style="color : rgb(31,62,124);">BULLETIN DE PAIE</h1>
+                    <p><span  class="company" t-esc="o.company_id.name"/><br/>
+                    <span t-esc="o.company_id.street"/>
+                    <span t-esc="o.company_id.zip"/> <span t-esc="o.company_id.city"/> -<span t-esc="o.company_id.country_id.name"/><br/>
+                    Tel : <span t-esc="o.company_id.phone"/> E-mail : <span t-esc="o.company_id.email"/><br/>
+                    </p>
+                    </td>
+                  </tr>
+                </table>
+                <table class="MyTable">
+                    <tr>
+                      <td>Nom et prénoms</td>
+                      <td><h2><span t-field="o.employee_id"/></h2></td>
+                      <td>Téléphone</td>
+                      <td><span t-field="o.employee_id.emergency_contact"/></td>
+                    </tr>
+                    <tr>
+                      <td>Matricule</td>
+                      <td><span t-esc="o.employee_id.matricule"/></td>
+                      <td>Poste occupé</td>
+                      <td><span t-field="o.employee_id.job_id"/></td>
+                    </tr>
+                    <tr>
+                      <td>Département</td>
+                      <td><span t-field="o.employee_id.contract_id.department_id"/></td>
+                      <td>Numéro CNSS</td>
+                      <td><span t-field="o.employee_id.numero_cnss"/></td>
+                    </tr>
+                     <t t-set="datef" t-value="datetime.date.today().strftime('%Y,%m,%d')"/>
+                     <t t-set="dated" t-value="o.employee_id.contract_id.date_start.strftime('%Y,%m,%d')"/>
+                     <t t-set="n1" t-value="datef.split(',')"/>
+                     <t t-set="n2" t-value="dated.split(',')"/>
+       
+                     <t t-set="d0" t-value="datetime.date(int(n1[0]),int(n1[1]),int(n1[2]))"/>
+                     <t t-set="d1" t-value="datetime.date(int(n2[0]),int(n2[1]),int(n2[2]))"/>
+                     
+                     <t t-set="deltat" t-value="d0 - d1"/>
+                     
+                     <t t-set="annee" t-value="(deltat.days - o.employee_id.contract_id.conge_sans_solde) / 365"/> 
+                     <t t-set="mois" t-value="((deltat.days - o.employee_id.contract_id.conge_sans_solde) - int(annee) * 365)/30" />
+                     
+                    <tr>
+                      <td>Nombre de personne à charge</td>
+                      <td><span t-esc="len(o.employee_id.persone_acharge_ids)"/></td>
+                      <td>Ancienneté</td>
+                      <td><span t-esc="str(int(annee)) + ' ans ' + str(int(mois)) + ' mois'" /></td>
+                    </tr>
+                  </table>  
+                <t t-set="total_autre_retenue" t-value="0"/>
+                <p>Periode de <span t-field="o.date_from"/> au <span t-field="o.date_to"/> </p>
+                <div style="border: 0px solid black; width: 100%; margin:auto; padding: 0px; height: 850px; margin-top: 5px;" class="row">
+              <table class="MyTable">
+                <thead class="table-active" style="border:1px solid black;">
+                  <tr>
+                  <th rowspan="2">N°</th><th rowspan="2">Designation</th><th rowspan="2">Nombre</th><th rowspan="2">Base</th><th colspan="3">Part salariale</th><th colspan="3">Part patronale</th>
+                </tr>
+                <tr>
+                  <th>Taux</th><th>Gain</th><th>Retenue</th><th>Taux</th><th>Retenue(+)</th><th>Retenue(-)</th>
+                </tr>
+                </thead>
+                <tbody class="table-light">
+                <t t-set="total_gain_imposable" t-value="0"/>
+                <t t-set="total_retenue" t-value="0"/>
+                <t t-set="total_autre_retenue" t-value="0"/>
+                <t t-set="total_autre_gain" t-value="0"/>
+                <t t-set="total_autre_retenue2" t-value="0"/>
+                <t t-set="salaire_net" t-value="0"/>
+                  <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip).sorted(lambda line: line.code)" t-as="line">
+                      <t t-if="line.category_id.name == 'GAIN IMPOSABLE' and line.total != 0">
+                        <t t-set="total_gain_imposable" t-value="total_gain_imposable + line.total"/>
+                        <td><span t-field="line.code"/></td>
+                        <td><span class="rubrique" t-field="line.name"/></td>
+                        <td class="montant"></td>
+                        <td></td><td></td>
+                        <td class="montant" t-if="line.total > 0"><span t-esc="line.total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                        <td></td>
+                        <td class="montant" t-if="0 > line.total"><span t-esc="-line.total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                        <td></td>
+                        <td></td>  
+                      </t>
+                  </tr>
+                   <tr>
+                      <td></td>
+                      <td height="50"><b>Total brut</b></td>
+                      <td></td>
+                      <td></td><td></td>
+                      <td class="montant"><span style="font-weight: bold; text-decoration: overline;" t-esc="total_gain_imposable" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                      <td></td><td></td><td></td><td></td>
+                  </tr>
+                  <t t-foreach="o.line_ids.sorted(lambda line: line.code)" t-as="line">
+                      <t t-if="line.category_id.name == 'CHARGE PATRONALE'">
+                        <t t-set="total_autre_retenue" t-value="total_autre_retenue + line.total"/>
+                      </t>
+                  </t>
+                  <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip).sorted(lambda line: line.code)" t-as="line">
+                      <t t-if="line.category_id.name == 'RETENUE' and line.total != 0">
+                        <t t-set="total_retenue" t-value="total_retenue + line.total"/>
+                        <td><span t-field="line.code"/></td>
+                        <td><span class="rubrique" t-field="line.name"/></td>
+                        <td class="montant"></td>
+                        <td class="montant"><span t-if="line.code == '400'" t-esc="total_gain_imposable" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                        <td class="montant"><span t-if="line.code == '400'" t-esc="4" /></td>
+                        <td></td>
+                        <td class="montant"><span t-esc="line.total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                        <td class="montant"><span t-if="total_autre_retenue > 0 and line.code == '400'" t-esc="17.5" /></td>
+                        <td></td>
+                        <td class="montant"><span t-if="total_autre_retenue > 0 and line.code == '400'" t-esc="total_autre_retenue" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                      </t>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td height="50"><b>Total retenue</b></td>
+                    <td></td><td></td><td></td><td></td>
+                    <td class="montant"><span style="font-weight: bold; text-decoration: overline;" t-esc="total_retenue" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                    <td></td><td></td><td  class="montant"><span t-if="total_autre_retenue > 0" style="font-weight: bold; text-decoration: overline;" t-esc="total_autre_retenue" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}" /></td>
+                  </tr>
+                    <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip).sorted(lambda line: line.code)" t-as="line" style="border-bottom : 1px;">
+                      <t t-if="line.category_id.name == 'AUTRE GAIN' and line.total != 0">
+                        <t t-set="total_autre_gain" t-value="total_autre_gain + line.total"/>
+                        <td><span t-field="line.code"/></td>
+                        <td><span class="rubrique" t-field="line.name"/></td>
+                        <td class="montant"></td>
+                        <td></td><td></td>
+                        <td class="montant"><span t-esc="line.total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                        <td></td><td></td><td></td><td></td>
+                      </t>
+                  </tr>
+                  
+                  <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip).sorted(lambda line: line.code)" t-as="line" style="border-bottom : 1px;">
+                      <t t-if="line.category_id.name == 'AUTRE RETENUE' and line.total != 0">
+                        <t t-set="total_autre_retenue2" t-value="total_autre_retenue2 + line.total"/>
+                        <td><span t-field="line.code"/></td>
+                        <td><span class="rubrique" t-field="line.name"/></td>
+                        <td class="montant"><span t-field="line.quantity"/></td>
+                        <td></td><td></td><td></td>
+                        <td class="montant"><span t-esc="line.total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></td>
+                        <td></td><td></td><td></td>
+                      </t>
+                  </tr>
+                  <tr>
+                    <td colspan="10"></td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+              
+             <t t-set="cumule_sal_brut" t-value="0"/>
+             <t t-set="cumule_ch_sal" t-value="0"/>
+             <t t-set="cumule_ch_ptr" t-value="0"/>
+             <t t-set="cumule_net_impo" t-value="0"/>
+             <t t-set="cumule_heure_tr" t-value="0"/>
+              <t t-foreach="o.employee_id.payslip_ids.filtered(lambda line: line.state == 'draft')" t-as="lines" style="border-bottom : 1px;">
+                
+                 <t t-set="datef" t-value="lines.date_to.strftime('%Y,%m,%d')"/>
+                 <t t-set="dated" t-value="o.date_to.strftime('%Y,%m,%d')"/>
+                 
+                 <t t-set="n1" t-value="datef.split(',')"/>
+                 <t t-set="n2" t-value="dated.split(',')"/>
+                 
+                 <t t-set="cumule_heure_tr" t-value="o.employee_id.heure_travail * int(n2[1]) "/>
+   
+                 <t t-set="d0" t-value="datetime.date(int(n1[0]),int(n1[1]),int(n1[2]))"/>
+                 <t t-set="d1" t-value="datetime.date(int(n2[0]),int(n2[1]),int(n2[2]))"/>
+                 
+                 <t t-set="deltat" t-value="d1 - d0"/>
+            
+                 <t t-foreach="lines.line_ids" t-as="line">
+                    <t t-if="deltat.days >= 0">
+                      <t t-if="line.category_id.name == 'GAIN IMPOSABLE'">
+                        <t t-set="cumule_sal_brut" t-value="cumule_sal_brut + line.total"/>
+                      </t>
+                      <t t-if="line.category_id.name == 'RETENUE'">
+                        <t t-set="cumule_ch_sal" t-value="cumule_ch_sal + line.total"/>
+                      </t>
+                      <t t-if="line.category_id.name == 'CHARGE PATRONALE'">
+                        <t t-set="cumule_ch_ptr" t-value="cumule_ch_ptr + line.total"/>
+                      </t>
+                      <t t-if="line.category_id.name == 'Brut'">
+                        <t t-set="cumule_net_impo" t-value="cumule_net_impo + line.total"/>
+                      </t>
+                   </t>
+                 </t>
+              </t>
+              
+              <t t-foreach="o.line_ids" t-as="line">
+                  <t t-if="line.category_id.code == 'NET'">
+                    <t t-set="salaire_net" t-value="salaire_net + line.total"/>
+                  </t>
+                </t>
+              <div style="border: 0px solid black; width: 100%; margin:auto; height: 100px; margin-top: 45px;" class="row">
+                <table class="MyTable">
+                  <tr class="table-active">
+                    <th>Cumul</th><th>Salaire brut</th><th>Charges salariales</th><th>Charges patronales</th><th>Avantage en nature</th><th>Heures travaillées</th><th>Heures suplémentaires</th><th bgcolor="#d3d3d3">Net à payer</th>
+                  </tr>
+                  <tr class="table-light">
+                    <th>Periode</th><th><span t-esc="total_gain_imposable" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}" />
+                    </th><th><span t-esc="total_retenue" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></th>
+                    <th><span t-esc="total_autre_retenue" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/>
+                    </th><th>0</th><th><span t-esc="round(o.employee_id.heure_travail)" /></th><th>0</th><th rowspan="2" style="background-color: #E8E8E8 ; vertical-align: center;"><span t-esc="salaire_net" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}" /></th>
+                  </tr>
+                    <tr class="table-light">
+                    <th>Année</th><th><span t-esc="cumule_sal_brut" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}" /></th>
+                    <th><span t-esc="cumule_ch_sal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}" />
+                    </th><th><span t-esc="cumule_ch_ptr" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/></th>
+                    <th>0</th><th><span t-esc="round(cumule_heure_tr)" /></th><th>0</th>
+                  </tr>
+                </table>
+              </div>
+              </div>
+              <i>Pour vous aider à faire valoir vos droits, concervez ce bulletin de paie sans limitation de durée</i>
+            </t>
+        <!--</t>-->
+    </t>
+	</template>
+</odoo>

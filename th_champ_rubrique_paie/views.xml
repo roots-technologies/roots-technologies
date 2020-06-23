@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		 <record id="view_contract_form_inherit" model="ir.ui.view">
+        	<field name="name">Contract fiels costum</field>
+        	<field name="model">hr.contract</field>
+        	<field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        	<field name="arch" type="xml">
+        		<field name="advantages" position="after">
+        			<field name="rapel_salaire_imp"/>
+	                <field name="sursalaire"/>
+        		</field>
+            	<group name="salary_and_advantages" position="after">
+                		<group string="Primes et gratifications" colspan="3">
+                			<group>
+                				<field name="prime_garde"/>
+	                			<field name="prime_panier"/>
+	                			<field name="prime_caisse"/>
+	                			<field name="prime_risque"/>
+	                			<field name="prime_salisure"/>
+	                			<field name="prime_speciale"/>
+	                			<field name="prime_specialite"/>
+	                			<field name="prime_responsabilite"/>
+                			</group>
+                			<group>
+                				<field name="absence"/>
+	                			<field name="adjustement"/>
+	                			<field name="appel_urgence"/>
+	                			<field name="astreinte"/>
+	                			<field name="conge_sans_solde"/>
+	                			<field name="indemnite_transport"/>
+	                			<field name="regularisation_salaire_net"/>
+	                			<field name="trop_percu"/>
+	                			<field name="remboursement_pret"/>
+	                			<field name="type_paiement"/>
+                			</group>
+                		</group>
+            	</group>
+        	</field>
+		</record>
+		<record id="view_employee_form_inherit" model="ir.ui.view">
+			<field name="name">Employee custom fiels</field>
+        	<field name="model">hr.employee</field>
+        	<field name="inherit_id" ref="hr.view_employee_form"/>
+        	<field name="arch" type="xml">
+				<page name="hr_settings" position="after">
+				 	<page name="persone_acharge" string="Personnes à charge">
+				 		<tree>
+					 		<field name="persone_acharge_ids"/>
+					 	</tree>
+				 	</page>
+				</page>
+				<field name="work_phone" position="after">
+					<field name="matricule"/>
+					<field name="numero_cnss"/>
+				</field>
+				<field name="tz" position="after">
+					<field name="heure_travail"/>
+				</field>
+				<page name="persone_acharge" position="after">
+					<page name="bulletin_paie" string="Bulletins de paie">
+						<tree>
+					 		<field name="payslip_ids"/>
+					 	</tree>
+					</page>
+				</page>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="persone_a_charge_form">
+		    <field name="name">persone_a_charge.form</field>
+		    <field name="model">hr.personne.acharge</field>
+		    <field name="arch" type="xml">
+		        <form string="Personene à charge">
+		            <sheet>
+		                <group>
+		                    <field name="name"/>
+		                    <field name="date_naissance"/>
+		                </group>
+		                <group>
+		                    <field name="age"/>
+		                </group>
+		            </sheet>
+		        </form>
+		    </field>
+		</record>
+
+		<record model='ir.ui.view' id='personne_acharge_tree'>
+		    <field name='name'>personne_acharge.tree</field>
+		    <field name='model'>hr.personne.acharge</field>
+		    <field name='arch' type='xml'>
+		        <tree string='Personne à charge'>
+		            <field name='name'/>
+		            <field name='date_naissance'/>
+		            <field name='age'/>
+		        </tree>
+		    </field>
+		</record>		
+	</data>
+</odoo>
