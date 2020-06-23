@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record model="ir.ui.view" id="print_payroll_pdf_report_form">
+		<field name="name">print_payrollpdf_pdf_report</field>
+		<field name="model">print.payrollpdf.report</field>
+		<field name="arch" type="xml">
+			<form string="Livre de paie mensuel">
+				<group>
+					<group>
+						<field name="date_debut"/>
+					</group>
+					<group>
+						<field name="date_fin"/>
+					</group>
+				</group>
+				<footer>
+					<button name="print_report" string="imprimer" type="object" class="btn-primary"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_print_payroll_pdf_report" model="ir.actions.act_window">
+		<field name="name">Livre de paie en PDF</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">print.payrollpdf.report</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="print_payroll_pdf_report_form"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem 
+		id="menu_rapport_payroll_pdf_report" 
+		name="Rapport"
+		sequence="15"
+		parent="hr_payroll.menu_hr_payroll_root"
+	/>
+	<menuitem 
+		id="menu_payroll_pdf_report" 
+		name="Livre de paie en pdf" 
+		action="action_print_payroll_pdf_report"
+		parent="menu_rapport_payroll_pdf_report"
+	/>
+
+</odoo>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<report 
+		id = "paie_annuel_pdf_view_report" 
+		model = "print.payrollpdf.report" 
+		string = "Livre annuel de paie" 
+		report_type = "qweb-pdf" 
+		name = "th_paie_pdf_report.th_paie_annuel_pdf_report_view" 
+		file = "th_paie_pdf_report.th_paie_annuel_pdf_report_view"
+		/>
+
+		<template id="th_paie_annuel_pdf_report_view">
+			<t t-call="web.html_container">
+				<t t-call="web.external_layout">
+					<style>
+						.page_font{
+						font-size: 8;
+						}
+					</style>
+					<t t-set="page" t-value="1"/>
+					<t t-foreach="toute_les_liste_a_traiter" t-as="employee_groupe">
+						<div class="page page_font">
+							<h4 class="text-center">PAIE DE L'ANNEE <t t-esc="annee" /></h4>
+							<table class="table table-sm">
+								<tr>
+									<th width="25%">Rubriques</th>
+									<t t-foreach="employee_groupe" t-as="head_employee">
+										<th width="11%"><t t-esc="head_employee['employee_name']" /></th>
+									</t>
+								</tr>
+								<tr>
+									<th>Matricule</th>
+									<t t-foreach="employee_groupe" t-as="head_employee">
+										<th></th>
+									</t>
+								</tr>
+								<t t-foreach="heads" t-as="head">
+									<tr>
+										<t t-if="head[0] == 'Brut' or head[0] == 'Total cotisation' or head[0] == 'Salaire Net'">
+											<th><t t-esc="head[0]" /></th>
+										</t>
+										<t t-if="head[0] != 'Brut' and head[0] != 'Total cotisation' and head[0] != 'Salaire Net'">
+											<td><t t-esc="head[0]" /></td>
+										</t>
+										<t t-foreach="employee_groupe" t-as="employee_en_cour">
+											<t t-set="compteur" t-value="0"/>
+											<t t-foreach="employee_en_cour['lines']" t-as="line">
+												<t t-if="line['code'] == head[1]">
+													<t t-if="head[0] == 'Brut' or head[0] == 'Total cotisation' or head[0] == 'Salaire Net'">
+														<th><t t-esc="'{:,}'.format(round(line['total'])).replace(',', ' ')"/></th>
+													</t>
+													<t t-if="head[0] != 'Brut' and head[0] != 'Total cotisation' and head[0] != 'Salaire Net'">
+														<td><t t-esc="'{:,}'.format(round(line['total'])).replace(',', ' ')"/></td>
+													</t>
+													<t t-set="compteur" t-value="compteur + 1"/>
+												</t>
+											</t>
+											<t t-if="compteur == 0">
+												<td>0</td>
+											</t>
+										</t>
+									</tr>
+								</t>
+								<tr>
+									<th>Nombre d'employés</th>
+									<t t-foreach="range(len(employee_groupe))" t-as="emp">
+										<th>
+											<t t-if="employee_groupe_last and emp_last">
+												<t t-esc="nombre_employee"/>
+											</t>
+										</th>
+									</t>
+								</tr>
+							</table>
+							<div class="text-right">
+								<span>Page </span><span class="page" t-esc="page" /> sur <span class="topage" t-esc="len(toute_les_liste_a_traiter)" />
+							</div>
+							<t t-set="page" t-value="page + 1"/>
+							<p style="page-break-before:always;"></p>
+						</div>
+					</t>
+				</t>
+			</t>
+		</template>
+	</odoo>
