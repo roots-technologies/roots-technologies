@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="lot_bulletin_menu_action" model="ir.actions.act_window">
+		<field name="name">Lot de bulletins</field>
+		<field name="res_model">hr.lotbulletin</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[]</field>
+		<field name="help" type="html">
+			<p class="oe_view_nocontent create">
+				Créer votre premier lot de bulletin
+			</p>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="lot_bulletin_form_view">
+        <field name="name">Lot de bulletin</field>
+        <field name="model">hr.lotbulletin</field>
+        <field name="arch" type="xml">
+            <form string="Lot de bulletin"> 
+            	<header>
+            		<button name="genere_payslips" string="Générer les bulletins de paie" type="object" class="oe_highlight"/>
+            		<button name="calculer_salaire" string="Calculer les salaires" type="object"/>
+            		<button name="confim_all_payslip" string="Confirmer tous les bulletins" type="object"/>
+            		<button name="comtabiliser_paie"  string="Comptabiliser la paie" type="object" />
+            	</header>
+            	<sheet>
+            		<h1>	
+						<field name="name" placeholder="Nom du lot des bulletins de paie"/>
+            		</h1>
+					<group>
+						<group>
+							<field name="date_from"/>
+							<field name="date_to"/>
+						</group>
+						<group>
+							<field name="credit_note"/>
+						</group>
+					</group>
+	            	<notebook>
+	            		<page name="bulletin" string="Liste des bulletin">
+	            			<tree>
+	            				<field name="bulletin_ids"/>
+	            			</tree>
+	            		</page>
+	            		<page string="Comptabilité">
+	            			<group>
+	            				<group>
+	            					<field name="journal_id"/>
+	            					<field name="date_comptable"/>
+	            				</group>
+	            			</group>
+	            		</page>
+	            	</notebook>
+	            	<footer>
+	            		<button name="cancel_all_payslip" string="Annuler tous les bulletins" type="object"/>
+	            		<button name="draft_all_payslip" string="Remettre tout en brouillon" type="object"/>
+	            	</footer>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_payslip_form_inherit" model="ir.ui.view">
+		<field name="name">Hr payslip Custom</field>
+		<field name="model">hr.payslip</field>
+		<field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+		<field name="arch" type="xml">
+			<field name="payslip_run_id" position="after">
+				<field name="my_run"/>	
+			</field>
+		</field>
+	</record>
+
+	<menuitem id="lot_bulletin_menu" 
+		name="Créer des bulletins par lot"
+		parent="hr_payroll.menu_hr_payroll_root"
+		action="lot_bulletin_menu_action"/>
+</odoo>
