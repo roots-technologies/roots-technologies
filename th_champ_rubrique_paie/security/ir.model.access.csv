@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_personne_acharge,access.hr.personne.acharge,model_hr_personne_acharge,base.group_user,1,1,1,1
+access_rubrique_lier,access.rubrique.lier,model_rubrique_lier,base.group_user,1,1,1,1
