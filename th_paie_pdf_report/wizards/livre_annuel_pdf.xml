@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record model="ir.ui.view" id="print_paie_annuel_pdf_report_form">
+		<field name="name">print_paie_annuel_pdf_report</field>
+		<field name="model">print.paieannuel.report</field>
+		<field name="arch" type="xml">
+			<form string="Livre de paie mensuel">
+				<group>
+					<group>
+						<field name="date_debut"/>
+					</group>
+					<group>
+						<field name="date_fin"/>
+					</group>
+				</group>
+				<footer>
+					<button name="print_report" string="imprimer" type="object" class="btn-primary"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_print_paie_annuel_pdf_report" model="ir.actions.act_window">
+		<field name="name">Livre de paie annuel en PDF</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">print.paieannuel.report</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="print_paie_annuel_pdf_report_form"/>
+		<field name="target">new</field>
+	</record>
+	<menuitem 
+		id="menu_paie_annuel_pdf_report" 
+		name="Livre de paie annuel en pdf" 
+		action="action_print_paie_annuel_pdf_report"
+		parent="menu_rapport_payroll_pdf_report"
+	/>
+
+</odoo>
