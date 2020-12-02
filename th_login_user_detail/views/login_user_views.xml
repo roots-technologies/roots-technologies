@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="login_user_detail_form_view">
+            <field name="name">Date et heure de connexion</field>
+            <field name="model">login.detail</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="date_time"/>
+                        <field name="ip_address"/>
+                        <field name="ip_internet"/>
+                        <field name="connection_country"/>
+                        <field name="connection_region"/>
+                        <field name="geo_localisation"/>
+                        <field name="telecom_net_work"/>
+                        <field name="time_zone"/>
+                        <field name="techniques_details"/>
+                    </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="login_user_detail_tree_view">
+            <field name="name">Détails de la connexion</field>
+            <field name="model">login.detail</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date_time"/>
+                    <field name="ip_address"/>
+                    <field name="ip_internet"/>
+                    <field name="connection_country"/>
+                    <field name="connection_region"/>
+                    <field name="geo_localisation"/>
+                    <field name="telecom_net_work"/>
+                    <field name="time_zone"/>
+                    <field name="techniques_details"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="login_user_detail_action_window">
+            <field name="name">Détails de connexion utilisateur</field>
+            <field name="res_model">login.detail</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    <menuitem name="Détails de connexion" 
+        id="th_login_user_detail.menu_1_list" 
+        parent="base.menu_users"
+        action="login_user_detail_action_window"/>
+
+  </data>
+</odoo>
