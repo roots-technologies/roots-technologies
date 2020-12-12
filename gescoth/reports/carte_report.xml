@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="paperformat_carte" model="report.paperformat">
+		<field name="name">Carte A4</field>
+		<field name="default" eval="True"/>
+		<field name="orientation">Landscape</field>
+		<field name="header_spacing">0</field>
+		<field name="margin_top">7</field>
+		<field name="margin_bottom">0</field>
+		<field name="dpi">200</field>
+	</record>
+	<report
+		id = "carte_report_view"
+		model = "gescoth.carte"
+		string = "Carte scolaire"
+		report_type = "qweb-pdf"
+		name = "gescoth.eleve_cate_report_view"
+		file = "gescoth.eleve_cate_report_view"
+		paperformat="paperformat_carte"
+		/>
+		<template id="eleve_cate_report_view">
+			<t t-call="web.html_container">
+				<style>
+					.carte{
+						width: 425px;
+						height:280px;
+						border: 1px solid lightgray;
+						float: left;
+						margin:10px;
+						padding:5px;
+						background-image: url('https://zupimages.net/up/20/50/etok.jpg');
+						background-repeat: no-repeat;
+						background-size: cover;
+					}
+					.police{
+						color:#013E71;
+						font-family: 'Century Gothic'
+					}
+				</style>
+				<t t-set='count' t-value="0"/>
+				<t t-foreach="Liste_eleve" t-as="eleve">
+					<div class="page">
+					<div class="carte police">
+							<div style="height:60px;">
+
+							</div>
+							<br/>
+							<t t-if="eleve['photo']">
+								<img t-attf-src="data:image/*;base64,{{eleve['photo']}}" style="height: 100px; float:right; right:5px; position:relative; width: 100px;"/>
+							</t>
+							<div style="text-align:center;" class="police">
+								<b><span style="color:white">-----------</span>CARTE D'IDENTITÉ SCOLAIRE</b><br/>
+								<b style="color:red"><span style="color:white">-----------</span>ANNEE &#160;<t t-esc="eleve['anneescolaire']"/></b>
+							</div>
+							<span>Nom :&#160; <t t-esc="eleve['nom_eleve']" /></span><br/>
+							<span>Prénom(s) :&#160;<t t-esc="eleve['prenom']" /></span><br/>
+							<span>Né(e) le :&#160; <t t-esc="eleve['date_naissance']"/>&#160;à &#160;<t t-esc="eleve['lieu_naissance']"/> </span><br/>
+							<table width="100%" class="police">
+								<tr>
+									<td>Nationalité </td>
+									<td width="55%">:&#160;<t t-esc="eleve['nationalite']" /></td>
+									<td style="text-align:center;"><span t-esc="eleve['titre_chef_etablissement']"/></td>
+								</tr>
+								<tr>
+									<td>Classe </td>
+									<td>:&#160;<t t-esc="eleve['classe']" /></td>
+									<td></td>
+								</tr>
+								<tr style="color:red; height: 50px;">
+									<td>Matricule </td>
+									<td>:&#160;<t t-esc="eleve['matricule']" /></td>
+									<td style="text-align:center;" width="55%"><t t-esc="eleve['chef_etablissement']" /></td>
+								</tr>
+							</table>
+							<div style="position:relative; flaot:right; bottom:100">
+								<t t-if="image_signature and imprimer_la_signature">
+									<img t-attf-src="data:image/*;base64,{{image_signature}}" style="height: 80px; float:right; width: 80px; "/>
+								</t>
+								<t t-if="image_cache and imprimer_le_cachet">
+									<img t-attf-src="data:image/*;base64,{{image_cache}}" style="height: 80px; float:right; width: 80px;"/>
+								</t>
+							</div>
+						</div>
+						<t t-set="count" t-value="count + 1"/>
+						<t t-if="count == 9">
+							<p>------------</p>
+								<p style="page-break-before:always;"></p>
+								<t t-set="count" t-value="0"/>
+						</t>
+					</div>
+
+				</t>
+			</t>
+		</template>
+	</odoo>

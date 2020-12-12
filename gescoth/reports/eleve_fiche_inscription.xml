@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<report 
+		id = "eleve_fiche_incription_view_report" 
+		model = "gescoth.eleve" 
+		string = "Fiche d'incription" 
+		report_type = "qweb-pdf" 
+		name = "gescoth.report_eleve_fiche_incription_view" 
+		file = "gescoth.report_eleve_fiche_incription_view"
+        paperformat ="paperformat_bulletin"
+		/>
+		<template id="report_eleve_fiche_incription_view">
+			<t t-call="web.html_container">
+                <style>
+					.entete{
+                        height: 100px;
+                        width:320px;
+                        border: 3px solid black;
+                        font-size: 18px;
+					}
+                    .MyTable {
+						border-collapse:collapse;
+						border:1px solid black;
+						width: 100%;
+						}
+                    .MyTable td {
+						border:1px solid black;
+						margin-left: 150px;
+					}
+                    .MyTable tr{
+                    border-bottom : 0px;
+                    border-top: 0px;
+					}
+                    .MyTable th{
+                    border:1px solid black;
+					}
+                    .cadre{
+                        border: 2px solid black;
+                        height: 160px;
+		                width: 160px;
+                        padding:6px;
+                    }
+				</style>
+				<t t-foreach="docs" t-as="o">
+				<div class="page">
+                    <table>
+                        <tr>
+                            <td width="80%" style="font-size:30px;"> FICHE D'INSCRIPTION ET REINSCRIPTION ANNEE ACADEMIQUE 2020-2021 <t t-esc="env['ir.config_parameter'].sudo().get_param('gescoth.nom_etablissement')"/></td>
+                            <td width="20%">
+                                <div class="cadre">
+                                    <t t-if="o.photo">
+                                        <img t-att-src="image_data_uri(o.photo)" style="height: 160px; width:160px; margin:auto;" alt="Logo"/>
+                                    </t>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>	
+                    <table class="MyTable">
+                        <tr>
+                            <th colspan="2">IDENTITE DE L'ELEVE</th>
+                        </tr>
+                        <tr>
+                            <td width="30%">Nom : </td><td><t t-esc="o.nom_eleve"/></td>
+                        </tr>
+                        <tr>
+                            <td>Prénom(s) : </td><td><t t-esc="o.prenom_eleve"/></td>
+                        </tr>
+                        <tr>
+                            <td>Né(e) le : </td><td><span t-field="o.date_naissance" t-options='{"format": "dd/MM/yyyy"}'/></td>
+                        </tr>
+                        <tr>
+                            <td>Sexe :  </td><td><t t-esc="o.sexe"/></td>
+                        </tr>
+                    </table>
+                    <t t-set="status" t-value="['Nouveau(elle)','Doublant(es)','Triplant(e)','Quatriplant(s)','Transféré(s)']"/>
+                    <t t-set="etablissement" t-value="['Privé','Confessionnel']"/>	
+                    <p>Statut : <t t-esc="status[int(o.statut)]"/></p>
+                    <p>Dernier établissement fréquenté : <t t-esc="etablissement[int(o.derniere_etablissement)]"/></p>
+                    <p>Nom de l'établissement : <t t-esc="o.nom_etablissement"/></p>
+                    <p>Handicap ou inapt(EPS) : <t t-esc="'Non' if o.Apt_sport else 'Oui'"/></p>
+                    <t t-if="o.Apt_sport == False">
+                        <p>Pièces justificatif : <t t-esc="o.piece_justificatif"/></p>
+                    </t>
+                    <table class="MyTable">
+                        <tr>
+                            <th colspan="3">SCOLARITE ANTERIEUR</th>
+                        </tr>
+                        <tr>
+                            <th>Classe</th><th>Année</th><th>Etablissement</th>
+                        </tr>
+                        <t t-foreach="o.scolaire_anterieur_ids" t-as="annee">
+                            <tr>
+                                <td><t t-esc="annee.classe_id.name"/></td>
+                                <td><t t-esc="annee.annescolaire_id.name"/></td>
+                                <td><t t-esc="annee.etablisement"/></td>
+                            </tr>
+                        </t>
+                    </table>
+                    <br/><br/>
+                    <t t-if="len(o.parent_ids) > 0">
+                        <table class="MyTable">
+                            <tr>
+                                <th colspan="4">RENSEIGNEMENTS PARENTS</th>
+                            </tr>
+                            <t t-foreach="o.parent_ids" t-as="parent">
+                                <tr>
+                                    <th colspan="4"><t t-esc="'Mère' if int(parent.titulaire) == 0 else 'Père'" /></th>
+                                </tr>
+                                <tr>
+                                    <td>Nom</td><td><t t-esc="parent.name"/></td><td>Prénom(s)</td><td><t t-esc="parent.prenom"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Téléphone</td><td><t t-esc="parent.telephone"/></td><td>Portable</td><td><t t-esc="parent.telephone_portable"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td><td><t t-esc="parent.email"/></td><td>Nationalité</td><td><t t-esc="parent.nationalite"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Profession</td><td><t t-esc="parent.profession"/></td><td>Société</td><td><t t-esc="parent.societe"/></td>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
+                    <br/><br/><br/><br/>
+                    <p style="text-align:center;">Fait à <t t-esc="env['ir.config_parameter'].sudo().get_param('gescoth.ville')"/>, le <span t-field="o.date_arrive" t-options='{"format": "dd/MM/yyyy"}'/></p>
+                <p style="page-break-before:always;"></p>
+                </div>
+				</t>
+			</t>
+		</template>
+	</odoo>

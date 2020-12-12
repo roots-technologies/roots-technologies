@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="menu_cours_form" model="website.menu">
+		<field name="name">Cours</field>
+		<field name="url">/cours</field>
+		<field name="cours_id" ref="website.main_menu"/>
+		<field name="sequence">57</field>
+	</record>
+
+	<template id="page_cours" name="Cours">
+		<t t-call="website.layout">
+			<style>
+				.cours{
+				width: 200px;
+				margin:5px;
+				float: left;
+				box-shadow: 0px 1px 5px 2px;
+				text-align: center;
+				border-radius: 10px;
+				padding:50px 0 50px 0;
+				}
+			</style>
+			<div class="container">
+				<h1>Liste des cours</h1>
+				<t t-foreach="cours" t-as="cour">
+					<div class="cours">
+						<a t-att-href="cour.id">
+							<t t-esc="cour.titre"/>
+						</a>
+					</div>
+				</t>
+			</div>
+		</t>
+	</template>
+
+	<template id="page_chapitres" name="Chapitres">
+		<t t-call="website.layout">
+			<div class="container">
+				<h1>Les chapitres</h1>
+				<ol>	
+					<t t-foreach="chapitres" t-as="chapitre">
+						<li><a t-att-href="chapitre.id"><t t-esc="chapitre.name"/></a></li>				
+					</t>
+				</ol>
+			</div>
+		</t>
+	</template>
+</odoo>
