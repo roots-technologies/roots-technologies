@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="paperformat_bulltin_paie" model="report.paperformat">
+		<field name="name">Bilan ohada A4</field>
+		<field name="default" eval="True"/>
+		<field name="orientation">Portrait</field>
+		<field name="header_spacing">15</field>
+		<field name="margin_top">10</field>
+		<field name="margin_bottom">20</field>
+		<field name="dpi">90</field>
+	</record>
+
+	<report
+		id = "bilan_ohada_pdf_view_report"
+		model = "print.bilan"
+		string = "Bilan OHADA"
+		report_type = "qweb-html"
+		name = "th_etats_syscohada_pdf.th_bilan_ohada_pdf_report_view"
+		file = "th_etats_syscohada_pdf.th_bilan_ohada_pdf_report_view"
+		paperformat="paperformat_bulltin_paie"
+		/>
+		<template id="assets_common" name="assets" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<link rel="stylesheet" href="/th_etats_syscohada_pdf/static/src/css/styles.css"/>
+			</xpath>
+		</template>
+		<template id="th_bilan_ohada_pdf_report_view">
+			<t t-call="web.html_container">
+				<style>
+					.MyTable {
+						border-collapse:collapse;
+						border:1px solid black;
+						width: 100%;
+						}
+					.MyTable td {
+						border:1px solid black;
+						margin-left: 150px;
+						}
+						.MyTable tr{
+						border-bottom : 0px;
+						border-top: 0px;
+						}
+						.MyTable th{
+						border:1px solid black;
+						}
+					.tentete{
+						background-color: lightgray;
+						font-weight: bold;
+					}
+					.entete{
+						background-color: rgb(0,122,204);
+						color:white;
+						font-weight: bold;
+					}
+					tr{
+						height:35px;
+						font-size:20px;
+					}
+				</style>
+				<div class="page">
+					<h4 class="text-red">BILAN SYSCOADA REVISE (ACTIF)</h4>
+					<table width="100%" class="MyTable">
+						<tr class="entete" height="20">
+							<th rowspan="2">REF</th><th rowspan="2" width="35%">ACTIF</th><th rowspan="2">NOTE</th><th colspan="3">Exercice <t t-esc="excercice"/></th>
+						</tr>
+						<tr class="entete" height="20">
+							<th>Brut</th><th>Amort et depre.</th><th>Net</th>
+						</tr>
+						<tr class="tentete">
+							<td>AD</td>
+							<td >IMMOBILISATIONS INCORPORELLES</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_incorporel).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_incorporel_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_incorporel_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AE</td>
+							<td>Frais de développement et de prospection</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(frais_de_developpement_et_de_prospection).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(frais_de_developpement_et_de_prospection_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(frais_de_developpement_et_de_prospection_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AF</td>
+							<td>Brevets, licences, logiciels et droits similaires</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(brevets_licence_logiciel_et_droits_similaires).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(brevets_licence_logiciel_et_droits_similaires_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(brevets_licence_logiciel_et_droits_similaires_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AG</td>
+							<td>Fonds commercial et droit au bail</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(fonds_commercial_et_droit_au_bail).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(fonds_commercial_et_droit_au_bail_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(fonds_commercial_et_droit_au_bail_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AH</td>
+							<td>Autres immobilisations incorporelles</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autre_immobilisation_corporelles).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autre_immobilisation_corporelles_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autre_immobilisation_corporelles_net).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>AI</td>
+							<td>IMMOBILISATIONS CORPORELLES</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_corporel).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_corporel_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_corporel_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AJ</td>
+							<td>Terrains (Dont Plancement en net)</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(terrains).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(terrains_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(terrains_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AK</td>
+							<td>Bâtiment (Dont Plancement en net)</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(batiment).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(batiment_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(batiment_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AL</td>
+							<td>Aménagements, agencements et installations</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(amenagements_agencements_installations).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(amenagements_agencements_installations_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(amenagements_agencements_installations_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AM</td>
+							<td>Matériel, mobilier et actifs biologiques</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(materiel_mobilier_et_actifs_biologiques).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(materiel_mobilier_et_actifs_biologiques_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(materiel_mobilier_et_actifs_biologiques_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AN</td>
+							<td>Matériel de transport</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(materiel_de_transport).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(materiel_de_transport_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(materiel_de_transport_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AP</td>
+							<td>AVANCES ET ACOMPTES VERSES SUR IMMOBILISATIONS</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(avance_et_acomptes_verse_sur_immobilisation).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(avance_et_acomptes_verse_sur_immobilisation_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(avance_et_acomptes_verse_sur_immobilisation_net).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>AQ</td>
+							<td>IMMOBILISATIONS FINANCIERES</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_financiere).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_financiere_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(immobilisation_financiere_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AR</td>
+							<td>Titres de participation</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(titre_de_participation).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(titre_de_participation_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(titre_de_participation_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>AS</td>
+							<td>Autres immobilisations financières</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autres_immobilisation_financiere).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autres_immobilisation_financiere_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autres_immobilisation_financiere_net).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>AZ</td>
+							<td>TOTAL ACTIF IMMOBILISE</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_actif_immobilise).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_actif_immobilise_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_actif_immobilise_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>BA</td>
+							<td>ACTIF CIRCULANT HAO</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(actif_circulant_hao).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(actif_circulant_hao_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(actif_circulant_hao_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>BB</td>
+							<td>STOCKS ET ENCOURS</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(stock_et_en_cours).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(stock_et_en_cours_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(stock_et_en_cours_net).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>BG</td>
+							<td>CREANCES ET EMPLOIS ASSIMILES</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(creances_et_emplois_assimiles).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(creances_et_emplois_assimiles_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(creances_et_emplois_assimiles_net).replace(',',' ')" /></td>
+					</tr>
+						<tr>
+							<td>BH</td>
+							<td>Fournisseurs avances versées</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(fournisseurs_avances_versees).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(fournisseurs_avances_versees_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(fournisseurs_avances_versees_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>BI</td>
+							<td>Clients</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(clients).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(clients_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(clients_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>BJ</td>
+							<td>Autres créances</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autres_creances).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autres_creances_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(autres_creances_net).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>BK</td>
+							<td>TOTAL ACTIF CIRCULANT</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_actif_cirulant).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_actif_cirulant_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_actif_cirulant_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>BQ</td>
+							<td>Titres de placement</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(titres_de_placement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(titres_de_placement_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(titres_de_placement_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>BR</td>
+							<td>Valeurs à encaisser</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(valeur_a_encaisser).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(valeur_a_encaisser_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(valeur_a_encaisser_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>BS</td>
+							<td>Banques, chèques postaux, caisse et assimilés</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(banque_cheque_postaux_caisse_et_assimile).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(banque_cheque_postaux_caisse_et_assimile_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(banque_cheque_postaux_caisse_et_assimile_net).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>BT</td>
+							<td>TOTAL TRESORERIE ACTIF</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_tresorerie_actif).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_tresorerie_actif_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_tresorerie_actif_net).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>BU</td>
+							<td>Ecart de conversion-Actif</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(ecart_de_conversion_actif).replace(',',' ')" /></td>
+							<td style="backgroung-color: gray;"></td>
+							<td style="backgroung-color: gray;"></td>
+						</tr>
+							<tr class="tentete">
+							<td>BT</td>
+							<td>TOTAL GENERAL</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_general).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_general_amortissement).replace(',',' ')" /></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(total_general_net).replace(',',' ')" /></td>
+						</tr>
+					</table>
+					<p style="page-break-after:always;">   </p>
+					<h4 class="text-red">BILAN SYSCOADA REVISE (PASSIF)</h4>
+					<table width="100%" class="MyTable">
+						<tr class="entete">
+							<th rowspan="2">REF</th><th rowspan="2" width="50%">PASSIF</th><th rowspan="2">NOTE</th><th>Exercice  <t t-esc="excercice"/></th>
+						</tr>
+						<tr class="entete">
+							<th>NET</th>
+						</tr>
+						<tr>
+							<td>CA</td>
+							<td>Capital</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-capital).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CB</td>
+							<td>Apporteurs capital non appelé</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-apporteurs_captial_non_appele).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CD</td>
+							<td>Primes liées au capital social</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-prime_liees_au_capital_social).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CE</td>
+							<td>Ecarts de réévaluation</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-ecarts_de_reevaluation).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CF</td>
+							<td>Réserves indisponibles</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-reserve_indisponible).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CG</td>
+							<td>Réserves libres</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-reserve_libre).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CH</td>
+							<td>Report à nouveau</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-report_a_nouveau).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CJ</td>
+							<td>Résultat net de l'exercice</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-resultat_net_de_exercice).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CL</td>
+							<td>Subventions d'investissement</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-subvention_investissement).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>CM</td>
+							<td>Provisions réglementées</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-provision_reglementees).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>CP</td>
+							<td>TOTAL CAPITAUX PROPRES ET RESSOURCES ASSIMILEES</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-total_capitaux_propres_et_ressources_assimilees).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DA</td>
+							<td>Emprunts et dettes financières diverses</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-emprunts_et_dettes_financieres_divers).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DB</td>
+							<td>Dettes de location acquisition</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-dettes_de_location_acquisition).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DC</td>
+							<td>Provisions pour risques et charges</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-provisions_pour_risques_et_charges).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>DD</td>
+							<td>TOTAL DETTES FINANCIERES ET RESSOURCES ASSIMILEES</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-total_dettes_financieres_et_ressources_assimilees).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>DF</td>
+							<td>TOTAL RESSOURCES STABLES</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-total_ressources_stables).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DH</td>
+							<td>Dettes circulantes HAO</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-dettes_circulantes_hao).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DI</td>
+							<td>Clients, avances reçues</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-clients_avance_recues).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DJ</td>
+							<td>Fournisseurs d'exploitation</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-fournisseur_dexploitation).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DK</td>
+							<td>Dettes fiscales et sociales</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-dettes_fiscales_et_sociales).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DM</td>
+							<td>Autres dettes</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-autres_dettes).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DN</td>
+							<td>Provisions pour risques à court terme</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-provision_pour_risque_a_court_terme).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>DP</td>
+							<td>TOTAL PASSIF CIRCULANT</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-total_passif_circulant).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DQ</td>
+							<td>Banques, crédits d'escompte</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-banque_credit_d_escompte).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DR</td>
+							<td>Banques, établissements financiers et crédits de trésorerie</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-banque_etablissement_financier_et_credit_de_tresorerie).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete">
+							<td>DT</td>
+							<td>TOTAL TRESORERIE PASSIF</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-total_tresorerie_passif).replace(',',' ')" /></td>
+						</tr>
+						<tr>
+							<td>DV</td>
+							<td>Ecart de conversion-Passif</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-ecart_de_converion_passif).replace(',',' ')" /></td>
+						</tr>
+						<tr class="tentete" height="30">
+							<td>DZ</td>
+							<td>TOTAL GENERAL</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(-total_general_passif).replace(',',' ')" /></td>
+						</tr>
+					</table>
+				</div>
+				<!-- </t> -->
+			</t>
+		</template>
+	</odoo>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<report
+		id = "flux_tresorerie_pdf_view_report"
+		model = "flux.tresorerie"
+		string = "Tableau de flux de trésorerie"
+		report_type = "qweb-html"
+		name = "th_etats_syscohada_pdf.th_flux_tresorerie_pdf_report_view"
+		file = "th_etats_syscohada_pdf.th_flux_tresorerie_pdf_report_view"
+		paperformat="paperformat_bulltin_paie"
+		/>
+<template id="th_flux_tresorerie_pdf_report_view">
+			<t t-call="web.html_container">
+				<style>
+					.MyTable {
+						border-collapse:collapse;
+						border:1px solid black;
+						width: 100%;
+						}
+					.MyTable td {
+						border:1px solid black;
+						margin-left: 150px;
+						}
+						.MyTable tr{
+						border-bottom : 0px;
+						border-top: 0px;
+						}
+						.MyTable th{
+						border:1px solid black;
+						}
+					.tentete{
+						background-color: lightgray;
+						font-weight: bold;
+					}
+					.entete{
+						background-color: rgb(0,122,204);
+						color:white;
+						font-weight: bold;
+					}
+					.totaux{
+						background-color: rgb(31,50,65);
+						color:white;
+						font-weight: bold;
+					}
+					tr{
+						height:35px;
+						font-size:20px;
+					}
+				</style>
+				<div class="page">
+					<h4 class="text-red">TABLEAU DES FLUX DE TRESORERIE SYSCOADA REVISÉ</h4>
+                    <table width="100%" class="MyTable">
+						<tr class="entete" height="60">
+							<th>REF</th><th>LIBELLES</th><th>Note</th><th>EXCERCICE N</th><th>EXCERCICE N-1</th>
+						</tr>
+						<tr class="tentete">
+							<td>ZA</td>
+							<td>Trésorerie nette au 1er janvier</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr class="tentete">
+							<td></td>
+							<td>Flux de trésorerie provenant des activités opérationnelles</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>FA</td>
+							<td>Capacité d'Autofinancement Globale (CAFG)</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>FB</td>
+							<td>Actif circulant HAO</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(actif_circulant_hao_net).replace(',',' ')" /></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>FC</td>
+							<td>Variation des stocks</td>
+							<td></td>
+							<td style="text-align: right;"><t t-esc="'{:,}'.format(variation_de_stocks).replace(',',' ')" /></td>
+							<td></td>
+						</tr>
+                    </table>
+                </div>
+            </t>
+    </template>
+</odoo>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<report
+		id = "compte_resultat_pdf_view_report"
+		model = "compte.resultat"
+		string = "Compte de résultat"
+		report_type = "qweb-html"
+		name = "th_etats_syscohada_pdf.th_compte_resultat_pdf_report_view"
+		file = "th_etats_syscohada_pdf.th_compte_resultat_pdf_report_view"
+		paperformat="paperformat_bulltin_paie"
+		/>
+<template id="th_compte_resultat_pdf_report_view">
+			<t t-call="web.html_container">
+				<style>
+					.MyTable {
+						border-collapse:collapse;
+						border:1px solid black;
+						width: 100%;
+						}
+					.MyTable td {
+						border:1px solid black;
+						margin-left: 150px;
+						}
+						.MyTable tr{
+						border-bottom : 0px;
+						border-top: 0px;
+						}
+						.MyTable th{
+						border:1px solid black;
+						}
+					.tentete{
+						background-color: lightgray;
+						font-weight: bold;
+					}
+					.entete{
+						background-color: rgb(0,122,204);
+						color:white;
+						font-weight: bold;
+					}
+					.totaux{
+						background-color: rgb(31,50,65);
+						color:white;
+						font-weight: bold;
+					}
+                    tr{
+                        height:20px;
+                        font-size:20px;
+                    }
+				</style>
+				<div class="page">
+					<h4 class="text-red">COMPTE DE RÉSULTAT SYSCOADA REVISÉ</h4>
+                    <table width="100%" class="MyTable">
+						<tr class="entete" height="60">
+							<th>REF</th><th>LIBELLES</th><th>MONTANT</th>
+						</tr>
+                        <tr>
+							<th>TA</th>
+                            <td>Ventes de marchandises</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-vente_de_marchandise).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RA</th>
+                            <td>Achats de marchandises</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(achat_de_marchandise).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RB</th>
+                            <td>Variation de stocks de marchandises </td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-variation_de_stocks_de_marchandises).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="tentete">
+							<th>XA</th>
+                            <td>MARGE COMMERCIALE</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-marge_commerciale).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TB</th>
+                            <td>Ventes de produits fabriqués</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-vente_de_produit_fabrique).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TC</th>
+                            <td>Travaux, services vendus</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-travaux_services_vendus).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TD</th>
+                            <td>Produits accessoires</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-produits_accessoires).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="tentete">
+							<th>XB</th>
+                            <td>CHIFFRE D'AFFAIRES </td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-chiffre_d_affaire).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TE</th>
+                            <td>Production stockée (ou déstockage)</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-production_stockee_ou_destockage).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TF</th>
+                            <td>Production immobilisée</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-production_immobilisee).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TG</th>
+                            <td>Subventions d'exploitation</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-subvention_d_exploitation).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TH</th>
+                            <td>Autres produits</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-autres_produits).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TI</th>
+                            <td>Transferts de charges d'exploitation</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-transferts_de_charges_d_exploitation).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RC</th>
+                            <td>Achats de matières premières et fournitures liées</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(achat_de_matieres_premieres_et_fournitures_liees).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RD</th>
+                            <td>Variation de stocks de matières premières et fournitures liées</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(variation_de_stocks_d_autres_approvisionnements).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RE</th>
+                            <td>Autres achats</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(autres_achats).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RF</th>
+                            <td>Variation de stocks d’autres approvisionnements</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(variation_de_stocks_d_autres_approvisionnements).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RG</th>
+                            <td>Transports</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(transports).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RH</th>
+                            <td>Services extérieurs</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(services_exterieurs).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RI</th>
+                            <td>Impôts et taxes</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(impots_et_taxes).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RJ</th>
+                            <td>Autres charges</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(autres_charges).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="tentete">
+							<th>XC</th>
+                            <td>VALEUR AJOUTEE </td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-valeur_ajoutee).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RK</th>
+                            <td>Charges de personnel</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(charges_de_personnel).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="tentete">
+							<th>XD</th>
+                            <td>EXCEDENT BRUT D'EXPLOITATION</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-excedent_brut_d_exploitation).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TJ</th>
+                            <td>Reprises d’amortissements, de provisions et dépréciations</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-reprises_d_amortissements_de_provisions_et_depreciations).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RL</th>
+                            <td>Dotations aux amortissements, aux provisions et dépréciations</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(dotations_aux_amortissements_aux_provisions_et_depreciations).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="tentete">
+							<th>XE</th>
+                            <td>RESULTAT D'EXPLOITATION</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-resultat_d_exploitation).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TK</th>
+                            <td>Revenus financiers et assimilés</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-revenus_financiers_et_assimiles).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TL</th>
+                            <td>Reprises de provisions et dépréciations financières</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-reprises_de_provisions_et_depreciations_financieres).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TM</th>
+                            <td>Transferts de charges financières</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-transferts_de_charges_financieres).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RM</th>
+                            <td>Frais financiers et charges assimilés </td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(frais_financiers_et_charges_assimiles).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RN</th>
+                            <td>Dotations aux provisions et aux dépréciations financières</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(dotations_aux_provisions_et_aux_depreciations_financieres).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="tentete">
+							<th>XF</th>
+                            <td>RESULTAT FINANCIER</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-resultat_financier).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="tentete">
+							<th>XF</th>
+                            <td>RESULTAT DES ACTIVITES ORDINAIRES</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-resultat_des_activites_ordinaires).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TN</th>
+                            <td>Produits des cessions d'immobilisations</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-produits_des_cessions_d_immobilisations).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>TO</th>
+                            <td>Autres Produits HAO</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-autres_Produits_hao).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RO</th>
+                            <td>Valeurs comptables des cessions d'immobilisations</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(valeurs_comptables_des_cessions_d_immobilisations).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RP</th>
+                            <td>Autres Charges HAO</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(autres_charges_hao).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="tentete">
+							<th>XH</th>
+                            <td>RESULTAT HORS ACTIVITES ORDINAIRES</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-resultat_hors_activite_ordinaire).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RQ</th>
+                            <td>Participation des travailleurs</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(participation_des_travailleurs).replace(',',' ')" /></td>
+						</tr>
+                        <tr>
+							<th>RS</th>
+                            <td>Impôts sur le résultat</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(impot_sur_le_resultat).replace(',',' ')" /></td>
+						</tr>
+                        <tr class="totaux" height="50">
+							<th>XI</th>
+                            <td>RESULTAT NET</td>
+                            <td style="text-align: right;"><t t-esc="'{:,}'.format(-resultat_net).replace(',',' ')" /></td>
+						</tr>
+                    </table>
+                </div>
+            </t>
+    </template>
+</odoo>

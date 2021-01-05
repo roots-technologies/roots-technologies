@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="flux_tresorerie_view_form">
+	    <field name="name">flux_tresorerie.form</field>
+	    <field name="model">flux.tresorerie</field>
+	    <field name="arch" type="xml">
+	        <form string="Bilan ohada">
+                <group>
+                    <group>
+	                    <field name="date_fin"/>
+	                </group>
+	                <group>
+	                    <field name="est_comptabilise"/>
+	                </group>
+                </group>
+                <footer>
+                	<button name="imprimer_compte_resultat" string="Imprimer" type="object" class="btn-primary"/>
+                	<button special="cancel" string="Annuler"/>
+                </footer>
+	        </form>
+	    </field>
+	</record>
+
+	 <record id="imprimer_flux_tresorerie" model="ir.actions.act_window">
+		<field name="name">Flux de trésorerie</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">flux.tresorerie</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="flux_tresorerie_view_form"/>
+		<field name="target">new</field>
+	</record>
+
+    <menuitem 
+    	id="flux_tresorerie_resultat" 
+    	name="TABLEAU DES FLUX DE TRÉSORERIE" 
+    	action="imprimer_flux_tresorerie"
+    	parent="menu_rapport_ohada"/>
+</odoo> 
